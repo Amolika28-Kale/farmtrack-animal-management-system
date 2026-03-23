@@ -40,9 +40,9 @@ export default function Sidebar() {
   const MobileMenuButton = () => (
     <button
       onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-      className="lg:hidden fixed top-4 left-4 z-50 bg-gradient-to-r from-green-600 to-green-700 text-white p-3 rounded-xl shadow-lg hover:shadow-xl transition-all"
+      className="lg:hidden fixed top-4 left-4 z-50 p-2 rounded-md bg-white shadow-md focus:outline-none focus:ring-2 focus:ring-green-500 transition-colors"
     >
-      {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+      {isMobileMenuOpen ? <X size={15} /> : <Menu size={15} />}
     </button>
   );
 

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { 
   Leaf, Mail, Lock, AlertCircle, LogIn, 
-  Eye, EyeOff, Fingerprint, Shield, Award
+  Eye, EyeOff, Award
 } from "lucide-react";
 import api from "../services/api";
 import React from "react";
@@ -13,7 +13,6 @@ export default function Login() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [rememberMe, setRememberMe] = useState(false);
   const navigate = useNavigate();
 
   const login = async (e) => {
@@ -25,7 +24,6 @@ export default function Login() {
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("user", JSON.stringify(res.data.user));
       
-      // Show success animation before redirect
       setTimeout(() => {
         navigate("/dashboard");
       }, 500);
@@ -37,9 +35,9 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 flex items-center justify-center p-3 sm:p-4">
+    <div className="min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 flex items-center justify-center p-3 sm:p-4 relative overflow-hidden">
       {/* Animated Background */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+      <div className="fixed inset-0 pointer-events-none">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-green-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
         <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-emerald-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-teal-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
@@ -47,10 +45,12 @@ export default function Login() {
 
       <div className="w-full max-w-md relative z-10">
         {/* Logo and Header */}
-        <div className="text-center mb-6 sm:mb-8 animate-fadeIn">
+        <div className="text-center mb-6 sm:mb-8">
           <div className="inline-flex items-center justify-center relative">
             <div className="absolute inset-0 bg-green-600 rounded-full blur-lg opacity-50 animate-pulse"></div>
-           
+            <div className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-br from-green-600 to-emerald-600 text-white flex items-center justify-center mb-4 shadow-xl transform hover:scale-110 transition-transform duration-300">
+              <Leaf className="w-8 h-8 sm:w-10 sm:h-10" />
+            </div>
           </div>
           <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-800 mb-2">
             FarmTrack
@@ -61,10 +61,10 @@ export default function Login() {
         </div>
 
         {/* Login Card */}
-        <div className="bg-white/90 backdrop-blur-sm rounded-2xl sm:rounded-3xl shadow-2xl p-6 sm:p-8 border border-white/20 animate-slideUp">
+        <div className="bg-white/90 backdrop-blur-sm rounded-2xl sm:rounded-3xl shadow-2xl p-6 sm:p-8 border border-white/20">
           <div className="text-center mb-6 sm:mb-8">
             <h2 className="text-xl sm:text-2xl font-bold text-gray-800 mb-1">
-              Welcome Back!
+              Welcome Back! 👋
             </h2>
             <p className="text-sm sm:text-base text-gray-600">
               Sign in to continue to your dashboard
@@ -73,7 +73,7 @@ export default function Login() {
 
           {/* Error Message */}
           {error && (
-            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl flex gap-3 animate-shake">
+            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl flex gap-3">
               <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
               <div>
                 <p className="text-red-700 text-sm font-medium">Login Failed</p>
@@ -81,8 +81,6 @@ export default function Login() {
               </div>
             </div>
           )}
-
-      
 
           <form onSubmit={login} className="space-y-5">
             {/* Email Field */}
@@ -105,12 +103,9 @@ export default function Login() {
 
             {/* Password Field */}
             <div className="space-y-2">
-              <div className="flex justify-between items-center">
-                <label className="block text-sm font-medium text-gray-700">
-                  Password
-                </label>
-    
-              </div>
+              <label className="block text-sm font-medium text-gray-700">
+                Password
+              </label>
               <div className="relative group">
                 <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-green-600 transition-colors" />
                 <input
@@ -121,7 +116,13 @@ export default function Login() {
                   className="w-full pl-10 pr-12 py-3 sm:py-3.5 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all text-sm sm:text-base"
                   required
                 />
-               
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                >
+                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                </button>
               </div>
             </div>
 
@@ -176,50 +177,9 @@ export default function Login() {
         </div>
 
         <p className="text-center text-gray-500 text-xs mt-4">
-          © 2024 FarmTrack. All rights reserved.
+          © 2026 FarmTrack. All rights reserved.
         </p>
       </div>
-
-      {/* Add custom animations to your CSS */}
-      <style jsx>{`
-        @keyframes blob {
-          0% { transform: translate(0px, 0px) scale(1); }
-          33% { transform: translate(30px, -50px) scale(1.1); }
-          66% { transform: translate(-20px, 20px) scale(0.9); }
-          100% { transform: translate(0px, 0px) scale(1); }
-        }
-        .animate-blob {
-          animation: blob 7s infinite;
-        }
-        .animation-delay-2000 {
-          animation-delay: 2s;
-        }
-        .animation-delay-4000 {
-          animation-delay: 4s;
-        }
-        @keyframes fadeIn {
-          from { opacity: 0; transform: translateY(-20px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        .animate-fadeIn {
-          animation: fadeIn 0.6s ease-out;
-        }
-        @keyframes slideUp {
-          from { opacity: 0; transform: translateY(20px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        .animate-slideUp {
-          animation: slideUp 0.5s ease-out;
-        }
-        @keyframes shake {
-          0%, 100% { transform: translateX(0); }
-          10%, 30%, 50%, 70%, 90% { transform: translateX(-2px); }
-          20%, 40%, 60%, 80% { transform: translateX(2px); }
-        }
-        .animate-shake {
-          animation: shake 0.5s ease-in-out;
-        }
-      `}</style>
     </div>
   );
 }
